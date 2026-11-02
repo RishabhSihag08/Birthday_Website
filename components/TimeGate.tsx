@@ -18,7 +18,7 @@ interface TimeRemaining {
 const PLAYFUL_TOASTS = [
   "🚨 BEEP BEEP! Sneak-peek alarm triggered! Nice try, bestie! 😜",
   "🎂 Shhh! The cake is still in the oven! Come back on May 10, 2027!",
-  "🔒 Strict Security: Even birthday magic cannot bend time this early! ✨",
+
   "🌸 Patience, my friend! The best things in life are worth waiting for.",
   "🤫 Stop trying to peek! No spoilers until the big day! 🎁",
 ];
@@ -260,9 +260,9 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
               animate={
                 padlockShake
                   ? {
-                      rotate: [0, -14, 14, -12, 12, -6, 6, 0],
-                      scale: [1, 1.15, 1.1, 1.05, 1],
-                    }
+                    rotate: [0, -14, 14, -12, 12, -6, 6, 0],
+                    scale: [1, 1.15, 1.1, 1.05, 1],
+                  }
                   : { y: [0, -4, 0] }
               }
               transition={
@@ -379,12 +379,7 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
       {/* Discrete Bottom Creator Link */}
       <footer className="relative z-10 py-3 text-center">
-        <button
-          onClick={() => setShowSecretModal(true)}
-          className="text-xs text-rose-600/70 hover:text-rose-800 transition-colors underline-offset-2 hover:underline cursor-pointer"
-        >
-          Creator / Developer Preview 🔑
-        </button>
+
       </footer>
 
       {/* Passcode Modal for Creator / Rishabh */}
