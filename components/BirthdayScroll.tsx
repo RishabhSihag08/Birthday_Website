@@ -150,8 +150,8 @@ export const BirthdayScroll: React.FC = () => {
     };
   }, []);
 
-  // Procedural Masterpiece Birthday Cake Renderer
-  // Carefully centered at height * 0.48 so the entire cake is 100% visible and never covered
+  // Liquid Glass Morphing Cake Renderer
+  // Tiers materialize from liquid glass pools that rise and solidify
   const drawProceduralCake = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -164,374 +164,396 @@ export const BirthdayScroll: React.FC = () => {
       ctx.fillRect(0, 0, width, height);
 
       const centerX = width / 2;
-      // Positioned higher up (height * 0.48) to give abundant breathing room
-      const baseCenterY = height * 0.48;
-      const scaleFactor = Math.min(Math.max(width / 750, 0.62), Math.max(height / 650, 0.62), 1.1);
+      const baseCenterY = height * 0.5;
+      const scaleFactor = Math.min(Math.max(width / 800, 0.65), Math.max(height / 700, 0.65), 1.15);
 
-      // Soft ambient table glow
-      const tableGlow = ctx.createRadialGradient(
-        centerX,
-        baseCenterY + 20 * scaleFactor,
-        20 * scaleFactor,
-        centerX,
-        baseCenterY + 20 * scaleFactor,
-        340 * scaleFactor
+      // Ambient glow that pulses with the animation
+      const glowIntensity = 0.12 + Math.sin(time * 0.001) * 0.03;
+      const ambientGlow = ctx.createRadialGradient(
+        centerX, baseCenterY, 50 * scaleFactor,
+        centerX, baseCenterY, 400 * scaleFactor
       );
-      tableGlow.addColorStop(0, "rgba(251, 113, 133, 0.16)");
-      tableGlow.addColorStop(0.5, "rgba(255, 228, 233, 0.08)");
-      tableGlow.addColorStop(1, "rgba(255, 245, 247, 0)");
-      ctx.fillStyle = tableGlow;
+      ambientGlow.addColorStop(0, `rgba(251, 113, 133, ${glowIntensity})`);
+      ambientGlow.addColorStop(0.5, `rgba(254, 205, 214, ${glowIntensity * 0.5})`);
+      ambientGlow.addColorStop(1, "rgba(255, 245, 247, 0)");
+      ctx.fillStyle = ambientGlow;
       ctx.beginPath();
-      ctx.ellipse(centerX, baseCenterY + 20 * scaleFactor, 320 * scaleFactor, 90 * scaleFactor, 0, 0, Math.PI * 2);
+      ctx.ellipse(centerX, baseCenterY, 380 * scaleFactor, 120 * scaleFactor, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // PEDESTAL STAND (Always visible from start)
-      ctx.save();
-      ctx.translate(centerX, baseCenterY + 40 * scaleFactor);
+      // Helper function to draw liquid morphing tier
+      const drawLiquidTier = (
+        yPos: number,
+        radiusX: number,
+        radiusY: number,
+        height: number,
+        morphProgress: number,
+        hue: number
+      ) => {
+        if (morphProgress <= 0) return;
 
-      // Pedestal drop shadow
-      ctx.fillStyle = "rgba(136, 19, 55, 0.09)";
-      ctx.beginPath();
-      ctx.ellipse(0, 24 * scaleFactor, 190 * scaleFactor, 36 * scaleFactor, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Pedestal plate
-      const plateGrad = ctx.createLinearGradient(-190 * scaleFactor, 0, 190 * scaleFactor, 0);
-      plateGrad.addColorStop(0, "#FFFFFF");
-      plateGrad.addColorStop(0.3, "#FFF5F7");
-      plateGrad.addColorStop(0.7, "#FFE4E9");
-      plateGrad.addColorStop(1, "#FECDD6");
-      ctx.fillStyle = plateGrad;
-      ctx.strokeStyle = "rgba(244, 63, 94, 0.35)";
-      ctx.lineWidth = 2 * scaleFactor;
-
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 200 * scaleFactor, 42 * scaleFactor, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Porcelain stem
-      const stemGrad = ctx.createLinearGradient(-35 * scaleFactor, 0, 35 * scaleFactor, 0);
-      stemGrad.addColorStop(0, "#FFFFFF");
-      stemGrad.addColorStop(0.5, "#FFE4E9");
-      stemGrad.addColorStop(1, "#FECDD6");
-      ctx.fillStyle = stemGrad;
-      ctx.beginPath();
-      ctx.moveTo(-30 * scaleFactor, 0);
-      ctx.quadraticCurveTo(-15 * scaleFactor, 18 * scaleFactor, -60 * scaleFactor, 26 * scaleFactor);
-      ctx.lineTo(60 * scaleFactor, 26 * scaleFactor);
-      ctx.quadraticCurveTo(15 * scaleFactor, 18 * scaleFactor, 30 * scaleFactor, 0);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = "rgba(244, 63, 94, 0.25)";
-      ctx.stroke();
-      ctx.restore();
-
-      // TIER 1: Bottom Base Layer (Always visible, scalloped pearl trim)
-      ctx.save();
-      const currentY1 = baseCenterY;
-      const rX1 = 160 * scaleFactor;
-      const rY1 = 40 * scaleFactor;
-      const tierHeight1 = 70 * scaleFactor;
-
-      // Tier 1 Cylinder Body
-      const bodyGrad1 = ctx.createLinearGradient(centerX - rX1, 0, centerX + rX1, 0);
-      bodyGrad1.addColorStop(0, "#FB7185");
-      bodyGrad1.addColorStop(0.2, "#FECDD6");
-      bodyGrad1.addColorStop(0.55, "#FFF5F7");
-      bodyGrad1.addColorStop(0.85, "#FECDD6");
-      bodyGrad1.addColorStop(1, "#F43F5E");
-
-      ctx.fillStyle = bodyGrad1;
-      ctx.beginPath();
-      ctx.moveTo(centerX - rX1, currentY1);
-      ctx.lineTo(centerX - rX1, currentY1 - tierHeight1);
-      ctx.ellipse(centerX, currentY1 - tierHeight1, rX1, rY1, 0, Math.PI, 0, true);
-      ctx.lineTo(centerX + rX1, currentY1);
-      ctx.ellipse(centerX, currentY1, rX1, rY1, 0, 0, Math.PI, false);
-      ctx.fill();
-
-      // Tier 1 Top
-      const topGrad1 = ctx.createRadialGradient(
-        centerX - 30 * scaleFactor,
-        currentY1 - tierHeight1 - 10 * scaleFactor,
-        10 * scaleFactor,
-        centerX,
-        currentY1 - tierHeight1,
-        rX1
-      );
-      topGrad1.addColorStop(0, "#FFFFFF");
-      topGrad1.addColorStop(0.7, "#FFF0F3");
-      topGrad1.addColorStop(1, "#FECDD6");
-      ctx.fillStyle = topGrad1;
-      ctx.beginPath();
-      ctx.ellipse(centerX, currentY1 - tierHeight1, rX1, rY1, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "rgba(244, 63, 94, 0.25)";
-      ctx.lineWidth = 1.5 * scaleFactor;
-      ctx.stroke();
-
-      // Pearl frosting pearls along bottom edge of Tier 1
-      const pearlCount1 = 26;
-      for (let p = 0; p < pearlCount1; p++) {
-        const angle = (p / pearlCount1) * Math.PI;
-        const px = centerX + Math.cos(angle) * (rX1 + 2 * scaleFactor);
-        const py = currentY1 + Math.sin(angle) * (rY1 + 2 * scaleFactor);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.arc(px, py, 4.5 * scaleFactor, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-
-      // TIER 2: Middle Layer (Drops into place: 0.12 -> 0.45)
-      const tier2Progress = Math.max(0, Math.min(1, (progress - 0.12) / 0.32));
-      if (tier2Progress > 0) {
-        ctx.save();
-        const dropOffset2 = (1 - tier2Progress) * -110 * scaleFactor;
-        const currentY2 = baseCenterY - 70 * scaleFactor + dropOffset2;
-        ctx.globalAlpha = Math.min(1, tier2Progress * 1.4);
-
-        const rX2 = 118 * scaleFactor;
-        const rY2 = 30 * scaleFactor;
-        const tierHeight2 = 65 * scaleFactor;
-
-        const bodyGrad2 = ctx.createLinearGradient(centerX - rX2, 0, centerX + rX2, 0);
-        bodyGrad2.addColorStop(0, "#FDA4AF");
-        bodyGrad2.addColorStop(0.25, "#FECDD6");
-        bodyGrad2.addColorStop(0.65, "#FFFFFF");
-        bodyGrad2.addColorStop(0.85, "#FECDD6");
-        bodyGrad2.addColorStop(1, "#FB7185");
-
-        ctx.fillStyle = bodyGrad2;
-        ctx.beginPath();
-        ctx.moveTo(centerX - rX2, currentY2);
-        ctx.lineTo(centerX - rX2, currentY2 - tierHeight2);
-        ctx.ellipse(centerX, currentY2 - tierHeight2, rX2, rY2, 0, Math.PI, 0, true);
-        ctx.lineTo(centerX + rX2, currentY2);
-        ctx.ellipse(centerX, currentY2, rX2, rY2, 0, 0, Math.PI, false);
-        ctx.fill();
-
-        const topGrad2 = ctx.createRadialGradient(
-          centerX - 20 * scaleFactor,
-          currentY2 - tierHeight2 - 5 * scaleFactor,
-          5 * scaleFactor,
-          centerX,
-          currentY2 - tierHeight2,
-          rX2
-        );
-        topGrad2.addColorStop(0, "#FFFFFF");
-        topGrad2.addColorStop(0.7, "#FFF5F7");
-        topGrad2.addColorStop(1, "#FCE7F3");
-        ctx.fillStyle = topGrad2;
-        ctx.beginPath();
-        ctx.ellipse(centerX, currentY2 - tierHeight2, rX2, rY2, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(225, 29, 72, 0.2)";
-        ctx.stroke();
-
-        ctx.strokeStyle = "rgba(225, 29, 72, 0.4)";
-        ctx.lineWidth = 2.5 * scaleFactor;
-        ctx.beginPath();
-        ctx.ellipse(centerX, currentY2 - tierHeight2 / 2, rX2 - 1, rY2 - 1, 0, 0, Math.PI);
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // TIER 3: Crown Layer (Drops into place: 0.38 -> 0.70)
-      const tier3Progress = Math.max(0, Math.min(1, (progress - 0.38) / 0.30));
-      if (tier3Progress > 0) {
-        ctx.save();
-        const dropOffset3 = (1 - tier3Progress) * -120 * scaleFactor;
-        const currentY3 = baseCenterY - 135 * scaleFactor + dropOffset3;
-        ctx.globalAlpha = Math.min(1, tier3Progress * 1.4);
-
-        const rX3 = 76 * scaleFactor;
-        const rY3 = 22 * scaleFactor;
-        const tierHeight3 = 55 * scaleFactor;
-
-        const bodyGrad3 = ctx.createLinearGradient(centerX - rX3, 0, centerX + rX3, 0);
-        bodyGrad3.addColorStop(0, "#FDA4AF");
-        bodyGrad3.addColorStop(0.3, "#FFF0F5");
-        bodyGrad3.addColorStop(0.7, "#FFFFFF");
-        bodyGrad3.addColorStop(0.9, "#FECDD6");
-        bodyGrad3.addColorStop(1, "#FB7185");
-
-        ctx.fillStyle = bodyGrad3;
-        ctx.beginPath();
-        ctx.moveTo(centerX - rX3, currentY3);
-        ctx.lineTo(centerX - rX3, currentY3 - tierHeight3);
-        ctx.ellipse(centerX, currentY3 - tierHeight3, rX3, rY3, 0, Math.PI, 0, true);
-        ctx.lineTo(centerX + rX3, currentY3);
-        ctx.ellipse(centerX, currentY3, rX3, rY3, 0, 0, Math.PI, false);
-        ctx.fill();
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.ellipse(centerX, currentY3 - tierHeight3, rX3, rY3, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(225, 29, 72, 0.25)";
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // FLORALS & ROSES BLOOMING (0.45 -> 0.85)
-      const floralProgress = Math.max(0, Math.min(1, (progress - 0.45) / 0.35));
-      if (floralProgress > 0) {
         ctx.save();
 
-        const blooms = [
-          { x: centerX - 120 * scaleFactor, y: baseCenterY - 30 * scaleFactor, size: 22 * scaleFactor, color: "#E11D48" },
-          { x: centerX + 115 * scaleFactor, y: baseCenterY - 25 * scaleFactor, size: 20 * scaleFactor, color: "#FB7185" },
-          { x: centerX - 80 * scaleFactor, y: baseCenterY - 95 * scaleFactor, size: 18 * scaleFactor, color: "#FDA4AF" },
-          { x: centerX + 75 * scaleFactor, y: baseCenterY - 90 * scaleFactor, size: 21 * scaleFactor, color: "#E11D48" },
-          { x: centerX - 45 * scaleFactor, y: baseCenterY - 150 * scaleFactor, size: 16 * scaleFactor, color: "#BE123C" },
-          { x: centerX + 50 * scaleFactor, y: baseCenterY - 145 * scaleFactor, size: 17 * scaleFactor, color: "#FDA4AF" },
-        ];
+        // Liquid phase (0 - 0.4): rippling pool
+        if (morphProgress < 0.4) {
+          const liquidPhase = morphProgress / 0.4;
+          const ripples = 6;
+          const waveAmplitude = (8 * (1 - liquidPhase)) * scaleFactor;
 
-        blooms.forEach((bloom, i) => {
-          const itemProgress = Math.max(0, Math.min(1, (floralProgress - i * 0.08) * 1.8));
-          if (itemProgress <= 0) return;
+          ctx.globalAlpha = 0.6 + liquidPhase * 0.4;
 
-          ctx.save();
-          ctx.translate(bloom.x, bloom.y);
-          ctx.scale(itemProgress, itemProgress);
+          // Draw liquid pool with ripples
+          const liquidGrad = ctx.createRadialGradient(
+            centerX, yPos, 10 * scaleFactor,
+            centerX, yPos, radiusX * liquidPhase
+          );
+          liquidGrad.addColorStop(0, `hsla(${hue}, 85%, 75%, 0.9)`);
+          liquidGrad.addColorStop(0.5, `hsla(${hue}, 75%, 85%, 0.7)`);
+          liquidGrad.addColorStop(1, `hsla(${hue}, 65%, 95%, 0.3)`);
 
-          ctx.fillStyle = "rgba(74, 120, 86, 0.75)";
+          ctx.fillStyle = liquidGrad;
           ctx.beginPath();
-          ctx.ellipse(-bloom.size * 0.7, 0, bloom.size * 0.6, bloom.size * 0.25, -Math.PI / 4, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.fillStyle = bloom.color;
-          for (let p = 0; p < 5; p++) {
-            const rot = (p / 5) * Math.PI * 2;
-            ctx.beginPath();
-            ctx.arc(
-              Math.cos(rot) * (bloom.size * 0.35),
-              Math.sin(rot) * (bloom.size * 0.35),
-              bloom.size * 0.45,
-              0,
-              Math.PI * 2
-            );
-            ctx.fill();
+          for (let i = 0; i <= 360; i += 3) {
+            const angle = (i * Math.PI) / 180;
+            const wave = Math.sin(i * ripples + time * 0.003) * waveAmplitude;
+            const r = (radiusX * liquidPhase) + wave;
+            const x = centerX + Math.cos(angle) * r;
+            const y = yPos + Math.sin(angle) * (radiusY * liquidPhase * 0.3) + wave * 0.3;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
           }
-
-          ctx.fillStyle = "#FFF0F3";
-          ctx.beginPath();
-          ctx.arc(0, 0, bloom.size * 0.28, 0, Math.PI * 2);
+          ctx.closePath();
           ctx.fill();
 
+          // Liquid shine
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.4 * liquidPhase})`;
+          ctx.beginPath();
+          ctx.ellipse(centerX - 20 * scaleFactor, yPos - 5 * scaleFactor,
+            radiusX * liquidPhase * 0.4, radiusY * liquidPhase * 0.2, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Rising phase (0.4 - 0.7): liquid rises into shape
+        else if (morphProgress < 0.7) {
+          const risePhase = (morphProgress - 0.4) / 0.3;
+          const currentHeight = height * risePhase;
+          const wobble = Math.sin(time * 0.004) * 3 * (1 - risePhase) * scaleFactor;
+
+          ctx.globalAlpha = 0.7 + risePhase * 0.3;
+
+          // Rising liquid cylinder with wobble
+          const risingGrad = ctx.createLinearGradient(
+            centerX - radiusX, yPos - currentHeight,
+            centerX + radiusX, yPos
+          );
+          risingGrad.addColorStop(0, `hsla(${hue}, 80%, 70%, 0.95)`);
+          risingGrad.addColorStop(0.3, `hsla(${hue}, 75%, 85%, 0.9)`);
+          risingGrad.addColorStop(0.7, `hsla(${hue}, 70%, 92%, 0.85)`);
+          risingGrad.addColorStop(1, `hsla(${hue}, 75%, 80%, 0.9)`);
+
+          ctx.fillStyle = risingGrad;
+          ctx.beginPath();
+          ctx.moveTo(centerX - radiusX + wobble, yPos);
+          ctx.lineTo(centerX - radiusX - wobble, yPos - currentHeight);
+          ctx.ellipse(centerX, yPos - currentHeight, radiusX, radiusY, 0, Math.PI, 0, true);
+          ctx.lineTo(centerX + radiusX + wobble, yPos);
+          ctx.ellipse(centerX, yPos, radiusX, radiusY, 0, 0, Math.PI, false);
+          ctx.fill();
+
+          // Liquid top surface
+          const topGrad = ctx.createRadialGradient(
+            centerX - 30 * scaleFactor, yPos - currentHeight - 10 * scaleFactor, 5 * scaleFactor,
+            centerX, yPos - currentHeight, radiusX
+          );
+          topGrad.addColorStop(0, "rgba(255, 255, 255, 0.9)");
+          topGrad.addColorStop(0.5, `hsla(${hue}, 70%, 95%, 0.8)`);
+          topGrad.addColorStop(1, `hsla(${hue}, 75%, 85%, 0.9)`);
+
+          ctx.fillStyle = topGrad;
+          ctx.beginPath();
+          ctx.ellipse(centerX, yPos - currentHeight, radiusX, radiusY, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Edge glow
+          ctx.strokeStyle = `rgba(255, 255, 255, ${0.5 * risePhase})`;
+          ctx.lineWidth = 2 * scaleFactor;
+          ctx.stroke();
+        }
+
+        // Solidifying phase (0.7 - 1.0): becomes solid with glass texture
+        else {
+          const solidPhase = (morphProgress - 0.7) / 0.3;
+          ctx.globalAlpha = 1;
+
+          // Solid cylinder body with glass effect
+          const solidGrad = ctx.createLinearGradient(
+            centerX - radiusX, yPos - height,
+            centerX + radiusX, yPos
+          );
+          solidGrad.addColorStop(0, `hsl(${hue}, 85%, 75%)`);
+          solidGrad.addColorStop(0.2, `hsl(${hue}, 75%, 88%)`);
+          solidGrad.addColorStop(0.5, `hsl(${hue}, 65%, 96%)`);
+          solidGrad.addColorStop(0.8, `hsl(${hue}, 75%, 90%)`);
+          solidGrad.addColorStop(1, `hsl(${hue}, 80%, 78%)`);
+
+          ctx.fillStyle = solidGrad;
+          ctx.beginPath();
+          ctx.moveTo(centerX - radiusX, yPos);
+          ctx.lineTo(centerX - radiusX, yPos - height);
+          ctx.ellipse(centerX, yPos - height, radiusX, radiusY, 0, Math.PI, 0, true);
+          ctx.lineTo(centerX + radiusX, yPos);
+          ctx.ellipse(centerX, yPos, radiusX, radiusY, 0, 0, Math.PI, false);
+          ctx.fill();
+
+          // Glass-like top surface
+          const glassTop = ctx.createRadialGradient(
+            centerX - 40 * scaleFactor, yPos - height - 15 * scaleFactor, 10 * scaleFactor,
+            centerX, yPos - height, radiusX
+          );
+          glassTop.addColorStop(0, "rgba(255, 255, 255, 1)");
+          glassTop.addColorStop(0.4, `hsla(${hue}, 60%, 98%, 0.95)`);
+          glassTop.addColorStop(0.8, `hsla(${hue}, 70%, 92%, 0.95)`);
+          glassTop.addColorStop(1, `hsla(${hue}, 75%, 88%, 1)`);
+
+          ctx.fillStyle = glassTop;
+          ctx.beginPath();
+          ctx.ellipse(centerX, yPos - height, radiusX, radiusY, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Frosted glass edge
+          ctx.strokeStyle = `hsla(${hue}, 60%, 65%, ${0.3 + solidPhase * 0.4})`;
+          ctx.lineWidth = 1.5 * scaleFactor;
+          ctx.stroke();
+
+          // Glass highlight shine
+          const shinePos = (time * 0.0005 % 1) * radiusX * 2 - radiusX;
+          ctx.save();
+          ctx.globalAlpha = 0.4 * solidPhase;
+          const shineGrad = ctx.createLinearGradient(
+            centerX + shinePos - 20 * scaleFactor, yPos - height,
+            centerX + shinePos + 20 * scaleFactor, yPos - height
+          );
+          shineGrad.addColorStop(0, "rgba(255, 255, 255, 0)");
+          shineGrad.addColorStop(0.5, "rgba(255, 255, 255, 0.6)");
+          shineGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.fillStyle = shineGrad;
+          ctx.fillRect(centerX + shinePos - 20 * scaleFactor, yPos - height - radiusY,
+            40 * scaleFactor, height + radiusY);
           ctx.restore();
-        });
+
+          // Frosted dots decoration
+          if (solidPhase > 0.5) {
+            const dotAlpha = (solidPhase - 0.5) * 2;
+            const dotCount = Math.floor(radiusX / 15);
+            for (let d = 0; d < dotCount; d++) {
+              const angle = (d / dotCount) * Math.PI * 2;
+              const dotX = centerX + Math.cos(angle) * radiusX * 0.85;
+              const dotY = yPos - height * 0.5 + Math.sin(angle) * radiusY * 0.5;
+              ctx.fillStyle = `rgba(255, 255, 255, ${0.4 * dotAlpha})`;
+              ctx.beginPath();
+              ctx.arc(dotX, dotY, 2.5 * scaleFactor, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
 
         ctx.restore();
-      }
+      };
 
-      // CANDLES & GLOWING FLAMES (0.70 -> 1.0)
-      const candleProgress = Math.max(0, Math.min(1, (progress - 0.70) / 0.28));
+      // TIER 1: Bottom layer (0 - 0.35 progress)
+      const tier1Progress = Math.max(0, Math.min(1, progress / 0.35));
+      drawLiquidTier(
+        baseCenterY,
+        140 * scaleFactor,
+        35 * scaleFactor,
+        75 * scaleFactor,
+        tier1Progress,
+        345 // rose hue
+      );
+
+      // TIER 2: Middle layer (0.25 - 0.60 progress)
+      const tier2Progress = Math.max(0, Math.min(1, (progress - 0.25) / 0.35));
+      drawLiquidTier(
+        baseCenterY - 75 * scaleFactor,
+        105 * scaleFactor,
+        28 * scaleFactor,
+        70 * scaleFactor,
+        tier2Progress,
+        350 // slightly shifted rose hue
+      );
+
+      // TIER 3: Top layer (0.50 - 0.85 progress)
+      const tier3Progress = Math.max(0, Math.min(1, (progress - 0.50) / 0.35));
+      drawLiquidTier(
+        baseCenterY - 145 * scaleFactor,
+        70 * scaleFactor,
+        20 * scaleFactor,
+        60 * scaleFactor,
+        tier3Progress,
+        355 // pink-rose hue
+      );
+
+      // CANDLES (0.70 -> 1.0): Materialize from liquid glass
+      const candleProgress = Math.max(0, Math.min(1, (progress - 0.70) / 0.30));
       if (candleProgress > 0) {
         ctx.save();
-        const topY = baseCenterY - 190 * scaleFactor;
-        const candlePositions = [-30 * scaleFactor, 0, 30 * scaleFactor];
+        const topY = baseCenterY - 205 * scaleFactor;
+        const candlePositions = [-35 * scaleFactor, 0, 35 * scaleFactor];
 
         candlePositions.forEach((cxOffset, idx) => {
           const candleX = centerX + cxOffset;
-          const candleH = 34 * scaleFactor * candleProgress;
+          const candleAppear = Math.max(0, Math.min(1, (candleProgress - idx * 0.1) * 1.5));
 
-          const candleGrad = ctx.createLinearGradient(candleX - 4 * scaleFactor, 0, candleX + 4 * scaleFactor, 0);
-          candleGrad.addColorStop(0, "#FDE047");
-          candleGrad.addColorStop(0.5, "#FFFBEB");
-          candleGrad.addColorStop(1, "#F59E0B");
+          if (candleAppear > 0) {
+            ctx.globalAlpha = candleAppear;
 
-          ctx.fillStyle = candleGrad;
-          ctx.fillRect(
-            candleX - 3.5 * scaleFactor,
-            topY - candleH,
-            7 * scaleFactor,
-            candleH
-          );
+            // Liquid glass candle (0 - 0.5 phase)
+            if (candleAppear < 0.5) {
+              const liquidPhase = candleAppear / 0.5;
+              const candleH = 30 * scaleFactor * liquidPhase;
 
-          ctx.strokeStyle = "#451A03";
-          ctx.lineWidth = 1.2 * scaleFactor;
-          ctx.beginPath();
-          ctx.moveTo(candleX, topY - candleH);
-          ctx.lineTo(candleX, topY - candleH - 6 * scaleFactor);
-          ctx.stroke();
+              // Liquid candle gradient
+              const liquidCandleGrad = ctx.createLinearGradient(
+                candleX, topY - candleH, candleX, topY
+              );
+              liquidCandleGrad.addColorStop(0, "rgba(253, 224, 71, 0.7)");
+              liquidCandleGrad.addColorStop(0.5, "rgba(255, 251, 235, 0.8)");
+              liquidCandleGrad.addColorStop(1, "rgba(245, 158, 11, 0.7)");
 
-          // FLICKERING INNER FLAME & HALO
-          const flameIgnition = Math.max(0, Math.min(1, (progress - 0.78) / 0.22));
-          if (flameIgnition > 0) {
-            const flicker = Math.sin(time * 0.008 + idx * 2.2) * 2;
-            const flameW = (5.5 + flicker * 0.3) * scaleFactor * flameIgnition;
-            const flameH = (14 + flicker) * scaleFactor * flameIgnition;
-            const flameCenterY = topY - candleH - 6 * scaleFactor - flameH / 2;
+              ctx.fillStyle = liquidCandleGrad;
 
-            const halo = ctx.createRadialGradient(
-              candleX,
-              flameCenterY,
-              2 * scaleFactor,
-              candleX,
-              flameCenterY,
-              50 * scaleFactor * flameIgnition
-            );
-            halo.addColorStop(0, "rgba(251, 191, 36, 0.45)");
-            halo.addColorStop(0.5, "rgba(244, 63, 94, 0.2)");
-            halo.addColorStop(1, "rgba(255, 245, 247, 0)");
-            ctx.fillStyle = halo;
-            ctx.beginPath();
-            ctx.arc(candleX, flameCenterY, 50 * scaleFactor * flameIgnition, 0, Math.PI * 2);
-            ctx.fill();
+              // Rippling liquid candle shape
+              ctx.beginPath();
+              for (let a = 0; a < Math.PI * 2; a += 0.1) {
+                const ripple = Math.sin(a * 8 + time * 0.005) * 0.5 * scaleFactor * (1 - liquidPhase);
+                const r = 3.5 * scaleFactor + ripple;
+                const x = candleX + Math.cos(a) * r;
+                const y = topY - candleH * 0.5 + Math.sin(a) * (candleH * 0.5);
+                if (a === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+              ctx.closePath();
+              ctx.fill();
+            }
+            // Solid glass candle (0.5 - 1.0 phase)
+            else {
+              const solidPhase = (candleAppear - 0.5) / 0.5;
+              const candleH = 30 * scaleFactor;
 
-            const flameGrad = ctx.createRadialGradient(
-              candleX,
-              flameCenterY + flameH * 0.2,
-              1 * scaleFactor,
-              candleX,
-              flameCenterY,
-              flameH
-            );
-            flameGrad.addColorStop(0, "#FFFFFF");
-            flameGrad.addColorStop(0.3, "#FDE047");
-            flameGrad.addColorStop(0.7, "#F97316");
-            flameGrad.addColorStop(1, "rgba(225, 29, 72, 0)");
+              // Frosted glass candle
+              const candleGrad = ctx.createLinearGradient(
+                candleX - 4 * scaleFactor, 0,
+                candleX + 4 * scaleFactor, 0
+              );
+              candleGrad.addColorStop(0, "#FDE047");
+              candleGrad.addColorStop(0.5, "#FFFBEB");
+              candleGrad.addColorStop(1, "#FBBF24");
 
-            ctx.fillStyle = flameGrad;
-            ctx.beginPath();
-            ctx.moveTo(candleX, flameCenterY - flameH / 2);
-            ctx.quadraticCurveTo(
-              candleX + flameW,
-              flameCenterY + flameH * 0.2,
-              candleX,
-              flameCenterY + flameH / 2
-            );
-            ctx.quadraticCurveTo(
-              candleX - flameW,
-              flameCenterY + flameH * 0.2,
-              candleX,
-              flameCenterY - flameH / 2
-            );
-            ctx.fill();
+              ctx.fillStyle = candleGrad;
+              ctx.fillRect(
+                candleX - 3.5 * scaleFactor,
+                topY - candleH,
+                7 * scaleFactor,
+                candleH
+              );
+
+              // Glass highlight
+              ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+              ctx.fillRect(
+                candleX - 1.5 * scaleFactor,
+                topY - candleH,
+                2 * scaleFactor,
+                candleH
+              );
+
+              // Wick
+              ctx.strokeStyle = "#451A03";
+              ctx.lineWidth = 1.2 * scaleFactor;
+              ctx.beginPath();
+              ctx.moveTo(candleX, topY - candleH);
+              ctx.lineTo(candleX, topY - candleH - 6 * scaleFactor);
+              ctx.stroke();
+
+              // FLAME (appears after solid phase > 0.3)
+              const flameIgnition = Math.max(0, Math.min(1, (solidPhase - 0.3) / 0.7));
+              if (flameIgnition > 0) {
+                const flicker = Math.sin(time * 0.008 + idx * 2.2) * 2;
+                const flameW = (5.5 + flicker * 0.3) * scaleFactor * flameIgnition;
+                const flameH = (16 + flicker) * scaleFactor * flameIgnition;
+                const flameCenterY = topY - candleH - 6 * scaleFactor - flameH / 2;
+
+                // Flame halo
+                const halo = ctx.createRadialGradient(
+                  candleX, flameCenterY, 2 * scaleFactor,
+                  candleX, flameCenterY, 55 * scaleFactor * flameIgnition
+                );
+                halo.addColorStop(0, `rgba(251, 191, 36, ${0.5 * flameIgnition})`);
+                halo.addColorStop(0.5, `rgba(244, 63, 94, ${0.25 * flameIgnition})`);
+                halo.addColorStop(1, "rgba(255, 245, 247, 0)");
+                ctx.fillStyle = halo;
+                ctx.beginPath();
+                ctx.arc(candleX, flameCenterY, 55 * scaleFactor * flameIgnition, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Inner flame
+                const flameGrad = ctx.createRadialGradient(
+                  candleX, flameCenterY + flameH * 0.2, 1 * scaleFactor,
+                  candleX, flameCenterY, flameH
+                );
+                flameGrad.addColorStop(0, "#FFFFFF");
+                flameGrad.addColorStop(0.3, "#FDE047");
+                flameGrad.addColorStop(0.7, "#F97316");
+                flameGrad.addColorStop(1, "rgba(225, 29, 72, 0)");
+
+                ctx.fillStyle = flameGrad;
+                ctx.beginPath();
+                ctx.moveTo(candleX, flameCenterY - flameH / 2);
+                ctx.quadraticCurveTo(
+                  candleX + flameW, flameCenterY + flameH * 0.2,
+                  candleX, flameCenterY + flameH / 2
+                );
+                ctx.quadraticCurveTo(
+                  candleX - flameW, flameCenterY + flameH * 0.2,
+                  candleX, flameCenterY - flameH / 2
+                );
+                ctx.fill();
+              }
+            }
           }
         });
 
         ctx.restore();
       }
 
-      // Shimmering Particles around Cake
+      // Sparkles around fully formed cake (0.80+)
       if (progress >= 0.80) {
         ctx.save();
-        const sparkleCount = 10;
+        const sparkleCount = 12;
         for (let s = 0; s < sparkleCount; s++) {
-          const sAngle = (s / sparkleCount) * Math.PI * 2 + time * 0.0006;
-          const sDist = (120 + Math.sin(time * 0.002 + s) * 40) * scaleFactor;
+          const sAngle = (s / sparkleCount) * Math.PI * 2 + time * 0.0005;
+          const sDist = (110 + Math.sin(time * 0.002 + s) * 35) * scaleFactor;
           const sx = centerX + Math.cos(sAngle) * sDist;
-          const sy = (baseCenterY - 110 * scaleFactor) + Math.sin(sAngle) * (sDist * 0.55);
-          const sSize = (2 + Math.sin(time * 0.005 + s * 1.5) * 1.5) * scaleFactor;
+          const sy = (baseCenterY - 100 * scaleFactor) + Math.sin(sAngle) * (sDist * 0.6);
+          const sSize = (2 + Math.sin(time * 0.004 + s * 1.5) * 1.5) * scaleFactor;
+          const sparkleAlpha = 0.6 + Math.sin(time * 0.003 + s) * 0.4;
 
-          ctx.fillStyle = s % 2 === 0 ? "rgba(244, 63, 94, 0.85)" : "rgba(251, 191, 36, 0.95)";
+          ctx.globalAlpha = sparkleAlpha;
+          ctx.fillStyle = s % 3 === 0 ? "#F43F5E" : s % 3 === 1 ? "#FDE047" : "#FB7185";
           ctx.beginPath();
           ctx.arc(sx, sy, Math.max(1, sSize), 0, Math.PI * 2);
           ctx.fill();
+
+          // Sparkle cross
+          if (sSize > 2) {
+            ctx.strokeStyle = ctx.fillStyle;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(sx - sSize * 1.5, sy);
+            ctx.lineTo(sx + sSize * 1.5, sy);
+            ctx.moveTo(sx, sy - sSize * 1.5);
+            ctx.lineTo(sx, sy + sSize * 1.5);
+            ctx.stroke();
+          }
         }
         ctx.restore();
       }
@@ -703,9 +725,9 @@ export const BirthdayScroll: React.FC = () => {
                 <SparkleIcon className="w-3.5 h-3.5" />
               </div>
 
-              <h1 className="font-editorial text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#4C0519] tracking-tight leading-[1.08] mb-3">
+              <h1 className="liquid-glass-text font-editorial text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight leading-[1.08] mb-3">
                 Happy Birthday, <br />
-                <span className="italic font-light text-rose-600">Bestie</span>
+                <span className="italic font-light">Bestie</span>
               </h1>
 
               <p className="font-sans text-xs sm:text-base text-[#881337]/80 max-w-md mx-auto leading-relaxed">
@@ -733,7 +755,7 @@ export const BirthdayScroll: React.FC = () => {
             style={{ opacity: section2Opacity, x: section2X }}
             className="pointer-events-none absolute left-6 md:left-14 lg:left-20 top-1/2 -translate-y-1/2 max-w-xs sm:max-w-sm md:max-w-md z-10"
           >
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-rose-200/70 shadow-xl">
+            <div className="liquid-glass-panel p-6 md:p-8 rounded-3xl shadow-xl">
               <div className="flex items-center space-x-2 text-rose-600 mb-2">
                 <CakeEmblemIcon className="w-4 h-4" />
                 <span className="text-xs uppercase tracking-widest font-semibold text-[#881337]/70">
@@ -741,7 +763,7 @@ export const BirthdayScroll: React.FC = () => {
                 </span>
               </div>
 
-              <h2 className="font-editorial text-2xl md:text-3xl text-[#4C0519] font-medium mb-3">
+              <h2 className="frosted-glass-text font-editorial text-2xl md:text-3xl font-medium mb-3" data-text="Unfiltered & Unstoppable.">
                 Unfiltered & Unstoppable.
               </h2>
 
@@ -756,7 +778,7 @@ export const BirthdayScroll: React.FC = () => {
             style={{ opacity: section3Opacity, x: section3X }}
             className="pointer-events-none absolute right-6 md:right-14 lg:right-20 top-1/2 -translate-y-1/2 max-w-xs sm:max-w-sm md:max-w-md z-10"
           >
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-rose-200/70 shadow-xl text-right">
+            <div className="liquid-glass-panel p-6 md:p-8 rounded-3xl shadow-xl text-right">
               <div className="flex items-center justify-end space-x-2 text-rose-600 mb-2">
                 <span className="text-xs uppercase tracking-widest font-semibold text-[#881337]/70">
                   Florals In Bloom
@@ -764,7 +786,7 @@ export const BirthdayScroll: React.FC = () => {
                 <SparkleIcon className="w-4 h-4" />
               </div>
 
-              <h2 className="font-editorial text-2xl md:text-3xl text-[#4C0519] font-medium mb-3">
+              <h2 className="frosted-glass-text font-editorial text-2xl md:text-3xl font-medium mb-3" data-text="Your Brightest Year Yet.">
                 Your Brightest Year Yet.
               </h2>
 
@@ -779,13 +801,13 @@ export const BirthdayScroll: React.FC = () => {
             style={{ opacity: section4Opacity, x: section4X }}
             className="absolute bottom-8 md:bottom-14 right-6 md:right-10 lg:right-16 max-w-xs sm:max-w-sm z-20"
           >
-            <div className="glass-panel p-5 md:p-7 rounded-3xl border border-rose-300/80 shadow-2xl flex flex-col items-start text-left">
+            <div className="frosted-glass-card p-5 md:p-7 flex flex-col items-start text-left">
               <div className="inline-flex items-center space-x-2 text-rose-600 text-[11px] font-semibold uppercase tracking-widest mb-2 bg-rose-50 px-3 py-1 rounded-full border border-rose-200/50">
                 <FlameIcon className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
                 <span>The Candles Are Glowing</span>
               </div>
 
-              <h2 className="font-editorial text-2xl md:text-3xl text-[#4C0519] font-normal mb-1.5">
+              <h2 className="frosted-glass-text font-editorial text-2xl md:text-3xl font-normal mb-1.5" data-text="A Toast to You.">
                 A Toast to You.
               </h2>
 
@@ -798,9 +820,9 @@ export const BirthdayScroll: React.FC = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setShowLetter(true)}
-                className="w-full py-3 px-5 rounded-full bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700 text-white font-medium text-xs md:text-sm shadow-lg hover:shadow-rose-400/30 transition-all flex items-center justify-center space-x-2 cursor-pointer focus:outline-none focus:ring-4 focus:ring-rose-200"
+                className="morph-glass-btn w-full py-3 px-5 rounded-full text-rose-700 font-medium text-xs md:text-sm shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer focus:outline-none focus:ring-4 focus:ring-rose-200"
               >
-                <FeatherQuillIcon className="w-4 h-4 text-white" />
+                <FeatherQuillIcon className="w-4 h-4" />
                 <span>Tap the Cake For Surprise</span>
                 <SparkleIcon className="w-3.5 h-3.5" />
               </motion.button>

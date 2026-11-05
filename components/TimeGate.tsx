@@ -249,7 +249,7 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
           initial={{ opacity: 0, y: 25, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white/80 backdrop-blur-2xl border border-rose-200/80 rounded-3xl p-6 sm:p-10 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.18)] text-center relative overflow-hidden"
+          className="holo-glass rounded-3xl p-6 sm:p-10 shadow-[0_25px_60px_-15px_rgba(244,63,94,0.18)] text-center relative overflow-hidden"
         >
           {/* Subtle Top Rose Glow Stripe */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-pink-300 via-rose-400 to-amber-200" />
@@ -306,8 +306,8 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-rose-950 tracking-tight leading-tight">
-            Shhh... <span className="italic text-rose-600">It's Too Soon!</span> 🤫
+          <h1 className="liquid-glass-text font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+            Shhh... <span className="italic">It's Too Soon!</span> 🤫
           </h1>
 
           {/* Sweet Subtitle */}
@@ -329,7 +329,7 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="bg-gradient-to-b from-white to-rose-50/60 rounded-2xl p-2 sm:p-3.5 border border-rose-200/70 shadow-sm flex flex-col items-center justify-center"
+                className="frosted-glass-card p-2 sm:p-3.5 flex flex-col items-center justify-center"
               >
                 <span className="font-serif text-2xl sm:text-3xl font-extrabold text-rose-900 tabular-nums">
                   {String(item.val).padStart(2, "0")}
@@ -347,7 +347,7 @@ export const TimeGate: React.FC<{ children: React.ReactNode }> = ({ children }) 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={handleRattleLock}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 text-white font-medium text-sm shadow-md shadow-rose-300/40 hover:shadow-rose-400/60 transition-all flex items-center justify-center gap-2"
+              className="morph-glass-btn w-full sm:w-auto px-6 py-2.5 rounded-full text-rose-700 font-medium text-sm shadow-md transition-all flex items-center justify-center gap-2"
             >
               <span>Try to Sneak a Peek 👀</span>
             </motion.button>

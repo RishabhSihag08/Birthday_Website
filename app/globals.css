@@ -73,6 +73,215 @@ html, body {
   box-shadow: 0 4px 15px -3px rgba(225, 29, 72, 0.06);
 }
 
+/* Futuristic Liquid Glass Typography */
+.liquid-glass-text {
+  background: linear-gradient(
+    135deg,
+    rgba(225, 29, 72, 0.95) 0%,
+    rgba(244, 63, 94, 1) 25%,
+    rgba(251, 113, 133, 1) 50%,
+    rgba(244, 63, 94, 1) 75%,
+    rgba(190, 18, 60, 0.95) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: liquidFlow 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 0 16px rgba(251, 113, 133, 0.5))
+          drop-shadow(0 4px 12px rgba(225, 29, 72, 0.3));
+  text-shadow: 0 0 40px rgba(255, 245, 247, 0.8);
+}
+
+.frosted-glass-text {
+  color: rgba(76, 5, 25, 0.98);
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.95),
+    0 0 40px rgba(255, 245, 247, 0.7),
+    0 2px 4px rgba(225, 29, 72, 0.15),
+    0 8px 16px rgba(251, 113, 133, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.frosted-glass-text::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  color: rgba(255, 255, 255, 0.5);
+  filter: blur(12px);
+}
+
+/* Liquid Glass Panel - Advanced */
+.liquid-glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 245, 247, 0.75) 50%,
+    rgba(255, 228, 233, 0.7) 100%
+  );
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(225, 29, 72, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(251, 113, 133, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: liquidShine 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Frosted Glass Card */
+.frosted-glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px) brightness(1.1);
+  -webkit-backdrop-filter: blur(24px) brightness(1.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(225, 29, 72, 0.14),
+    0 2px 8px rgba(251, 113, 133, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  position: relative;
+}
+
+.frosted-glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 245, 247, 0.2) 50%,
+    rgba(251, 113, 133, 0.3) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Morphing Glass Button */
+.morph-glass-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 245, 247, 0.8) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 24px rgba(225, 29, 72, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.morph-glass-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(251, 113, 133, 0.2) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.morph-glass-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 32px rgba(225, 29, 72, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.morph-glass-btn:hover::before {
+  opacity: 1;
+}
+
+.morph-glass-btn:active {
+  transform: translateY(0);
+}
+
+/* Holographic Glass Effect */
+.holo-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 245, 247, 0.4),
+    rgba(254, 205, 214, 0.3),
+    rgba(253, 164, 175, 0.4),
+    rgba(255, 245, 247, 0.5)
+  );
+  background-size: 400% 400%;
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: holoShift 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow:
+    0 8px 32px rgba(225, 29, 72, 0.12),
+    0 0 80px rgba(251, 113, 133, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes liquidFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes liquidShine {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+@keyframes holoShift {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(5deg);
+  }
+}
+
 /* Parchment Letter Paper Styling */
 .parchment-card {
   background: linear-gradient(135deg, #FFFDFD 0%, #FFF5F7 60%, #FFEBF0 100%);

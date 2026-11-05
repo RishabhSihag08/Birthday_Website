@@ -5,7 +5,7 @@ import { TimeGate } from "@/components/TimeGate";
 
 export default function Home() {
   return (
-    <TimeGate>
+    // <TimeGate>
       <main className="relative min-h-screen w-full bg-[#FFF5F7] selection:bg-[#FB7185]/30 selection:text-[#881337] overflow-x-clip">
         {/* Floating SVG Petal Particles */}
         <PetalParticles />
@@ -16,6 +16,6 @@ export default function Home() {
         {/* Scrollytelling Interactive Experience */}
         <BirthdayScroll />
       </main>
-    </TimeGate>
+    // </TimeGate>
   );
 }
